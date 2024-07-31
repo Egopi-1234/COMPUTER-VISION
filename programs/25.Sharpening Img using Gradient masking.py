@@ -1,0 +1,20 @@
+import cv2
+import numpy as np
+image_path = r"C:\image\thalapathy.jpg"
+image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+laplacian_kernel1 = np.array([[0, 1, 0], [1, -4, 1], [0, 1, 0]])
+laplacian_kernel2 = np.array([[-1, -1, -1], [-1, 8, -1], [-1, -1, -1]])
+laplacian1 = cv2.filter2D(gray_image, -1, laplacian_kernel1)
+laplacian2 = cv2.filter2D(gray_image, -1, laplacian_kernel2)
+sharpened_image1 = cv2.add(gray_image, laplacian1)
+sharpened_image2 = cv2.add(gray_image, laplacian2)
+sharpened_image1 = np.uint8(np.abs(sharpened_image1))
+sharpened_image2 = np.uint8(np.abs(sharpened_image2))
+cv2.imshow("Original Image", gray_image)
+cv2.imshow("Laplacian Sharpened Image 1", sharpened_image1)
+cv2.imshow("Laplacian Sharpened Image 2", sharpened_image2)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+cv2.imwrite(r"C:\image\thalapathy_sharpened1.jpg", sharpened_image1)
+cv2.imwrite(r"C:\image\thalapathy_sharpened2.jpg", sharpened_image2)
